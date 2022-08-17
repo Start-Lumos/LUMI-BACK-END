@@ -2,18 +2,15 @@ const User = require('../models/UserModel')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 module.exports = {
-    async index(res) {
-        const user = await User.find();
-        if (user == null) {
-            return res.json({ erro: "Erro" });
-        } else {
-            return res.json({user});
-        }
-    },
+
+    //Cadastro usuário
     async create(req, res) {
 
         const { userFirstName, userLastName, userEmail, userPassword, userCPF, userDTNasc, userPhone, toggleButton, userServico,userServDescricao, userServModalidade, userCity, userState } = req.body;
         let data = {};
+
+        //Verificando a existência de CPF ou E-mail já registrados no banco
+
         let user = await User.findOne({ userEmail });
         let userVerifyCPF = await User.findOne({ userCPF });
         if (!user && !userVerifyCPF) {
@@ -27,9 +24,11 @@ module.exports = {
             return res.status(500).json(user);
         }
     },
-    async details(req) {
+    
+    //Dados do usuário
+
+    async dataUser(req) {
         const { _id } = req;
-        console.log("details: "+_id)
         const user = await User.findOne({ _id });
         if (user == null) {
             return false;
@@ -38,33 +37,28 @@ module.exports = {
         }
     },
 
+    //Exibir usuários cadastrados como prestadores de serviço
+
     async listarServicos(res) {
         const user = await User.find({toggleButton: "true"});
         if (user == null) {
-            return {msg: "404"};
+            return {msg: "Nenhum prestador encontrado na base de dados."};
         } else {
             return res.json({user});
         }
     },
 
-    async searchUserId(req, res) {
-        const { _id } = req.params;
-        const user = await User.findOne({ _id });
-        if (user == null) {
-            return res.json({ erro: "Erro" });
-        } else {
-            return res.json(user);
-        }
-    },
-    async autenticacao(req) {
+    //Login
+
+    async autenticacaoLogin(req) {
         const { userEmail, userPassword } = req;
         const user = await User.findOne({ userEmail });
         if (user == null) {
             return false;
 
         } else {
-            const checkPass = await bcrypt.compare(userPassword, user.userPassword);
-            if (checkPass) {
+            const verificarSenha = await bcrypt.compare(userPassword, user.userPassword);
+            if (verificarSenha) {
                 let token = null;
                 try {
                     token = jwt.sign({
@@ -73,9 +67,8 @@ module.exports = {
                         process.env.SECRET,
                     );
 
-                    console.log("Autenticação realizada com sucesso");
                 } catch (error) {
-                    console.log(`Ocorreu um erro ${error}`);
+                    console.log(`Erro ao gerar token: ${error}`);
                 }
                 return { user, token };
             } else {
@@ -84,28 +77,68 @@ module.exports = {
 
         }
     },
+
+    //Apagar usuário
+
     async delete(req, res) {
         const { id } = req;
         const user = await User.findByIdAndDelete({ _id: id });
         if (user == null) {
-            return res.status(404).json({ erro: "Erro" });
+            return res.status(404).json({ erro: "Erro ao deletar a conta" });
         } else {
             return res.status(202).json(user);
         }
     },
-    async update(req, res) {
-        const { _id, userPassword } = req.body;
-        const user = await User.findOneAndUpdate({ _id: _id }, { userPassword: userPassword }, { new: true });
+
+    //Verificação antes da alteração de senha
+
+    async autenticarUserLogado(req, res) {
+        const { _id, userOldPassword } = req;
+        const user = await User.findOne({ _id });
         if (user == null) {
-            return { erro: "Erro" };
+            return { statusCode: 404 };
+        } else {
+            const verificarSenha = await bcrypt.compare(userOldPassword, user.userPassword);
+            if (verificarSenha) {
+                return { statusCode: 202, user };
+            } else {
+                return { statusCode: 203 };
+            }
+
+        }
+    },
+
+    //Atualizar senha
+
+    async updatePassword(req, res) {
+        const _id = req.body._id;
+        const userNewPassword = req.body.userNewPassword;
+        const user = await User.findOneAndUpdate({ _id: _id }, { userPassword: userNewPassword }, { new: true });
+        if (user == null) {
+            return { erro: "Erro ao alterar a senha" };
         } else {
             return res.status(202).json(user);
         }
     },
+
+    //Atualização dos dados
+
     async updateData(req, res) {
         const { _id, userFirstName, userLastName, userEmail, userCPF, userDTNasc, userPhone, toggleButton, userServico,userServDescricao, userServModalidade, userCity, userState } = req.body;
         const data = { userFirstName, userLastName, userEmail, userCPF, userDTNasc, userPhone, toggleButton, userServico,userServDescricao, userServModalidade, userCity, userState };
         const user = await User.findOneAndUpdate({ _id }, data, { new: true });
+        if (user == null) {
+            return res.json({ erro: "Erro ao encontrar o usuário" });
+        } else {
+            return res.json(user);
+        }
+    },
+    
+    //Para teste no Insomnia
+
+    async searchUserId(req, res) {
+        const { _id } = req.params;
+        const user = await User.findOne({ _id });
         if (user == null) {
             return res.json({ erro: "Erro" });
         } else {

@@ -3,51 +3,43 @@ const bcrypt = require('bcrypt');
 
 const jwt = require('jsonwebtoken');
 module.exports = {
-    async authLogin(req, res) {
+
+    //Autenticação de senha
+
+    async autenticarLogin(req, res) {
         const userEmail = req.body.userEmail;
         const userPassword = req.body.userPassword;
-        console.log(req.body);
-        const find = await User.autenticacao({ userEmail, userPassword });
+        const findUser = await User.autenticacaoLogin({ userEmail, userPassword });
 
-        if (find) {
-            return res.status(202).json({ ...find });
+        if (findUser) {
+            return res.status(202).json({ ...findUser });
         }
-        return res.status(203).json({ msg: "Acesso Negado" });
+        return res.status(203).json({ msg: "Usuário não encontrado" });
     },
-    // async authSenha(req, res) {
-    //     const email = req.body.email;
-    //     const seg = req.body.seg;
-    //     const findMentorado = await User.autenticacaoSenha({ email, seg });
-    //     const findMentor = await Mentor.autenticacaoSenha({ email, seg });
 
-    //     if (findMentorado) {
-    //         return res.status(202).json({ ...findMentorado });
-    //     }
+    //Alteração da senha
 
-    //     if (findMentor) {
-    //         return res.status(202).json({ ...findMentor });
-    //     }
-    //     return res.status(203).json({ msg: "Acesso Negado" });
-    // },
-    async authSenhaLog(req, res) {
+    async mudarSenha(req, res) {
         const _id = req.id;
-        const userPassword = req.body.userPassword;
-        const currentPass = req.body.currentPass;
-        const find = await User.autenticado({ _id, currentPass }, res);
-        if (find.user) {
-            const update = await User.update({ body: { userPassword, _id: _id } }, res)
+        const userOldPassword = req.body.userOldPassword;
+        const userNewPassword = req.body.userNewPassword;
+        const findUser = await User.autenticarUserLogado({ _id, userOldPassword }, res);
+        if (findUser.user) {
+            const update = await User.updatePassword({ body: { userNewPassword, _id: _id } }, res)
             return update
         }
-        return res.status(203).json({ msg: "Acesso Negado" });
+        return res.status(203).json({ msg: "Erro alterar a senha" });
     },
-    async authCheck(req, res) {
+
+    //Autenticação se o usuário está logado
+
+    async isUserLog(req, res) {
         const _id = req._id;
-        console.log(req)
-        const find = await User.details({ _id }, res);
-        if (find) {
-            return res.status(202).json({ ...find });
+        const findUser = await User.dataUser({ _id }, res);
+        if (findUser) {
+            return res.status(202).json({ ...findUser });
         }
-        return res.status(203).json({ msg: "Acesso Negado" });
+        return res.status(203).json({ msg: "Usuário não encontrado" });
     },
 
 }

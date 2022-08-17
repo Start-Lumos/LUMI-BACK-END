@@ -19,6 +19,8 @@ const DataSchema = new mongoose.Schema({
     timestamps: true
 });
 
+//Criação e criptografia de senha
+
 DataSchema.pre('save', function (next) {
     if (!this.isModified("userPassword")) {
         return next();
@@ -28,6 +30,9 @@ DataSchema.pre('save', function (next) {
     next();
 
 });
+
+//Atualização e criptografia de senha
+
 DataSchema.pre('findAndUpdate', async function (next) {
     var password = this.getUpdate().userPassword + '';
     if (password.length < 55) {
@@ -35,6 +40,9 @@ DataSchema.pre('findAndUpdate', async function (next) {
     }
     next();
 });
+
+//Atualização e criptografia de senha
+
 DataSchema.pre('findOneAndUpdate', async function (next) {
     var password = this.getUpdate().userPassword + '';
     if (password.length < 55) {

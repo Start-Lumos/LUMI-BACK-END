@@ -7,21 +7,17 @@ const checkToken = require('./middlewares/Jwt');
 
 
 //rotas de autenticação
-router.post('/auth/login', Auth.authLogin);
-// router.post('/auth/senha', Auth.authSenha);
-// router.post('/auth/senha-log', checkToken, Auth.authSenhaLog);
+router.post('/auth/login', Auth.autenticarLogin);
 router.get('/auth/check', checkToken, async (req, res) => {
-    const retorno = await Auth.authCheck({ _id: req.id }, res);
+    const retorno = await Auth.isUserLog({ _id: req.id }, res);
     return retorno;
 });
 
 
 //rotas de usuarios
-router.get('/user', (req, res) => User.index(res));
 router.get('/user/list', (req, res) => User.listarServicos(res));
 router.post('/api/user', User.create);
-router.get('/api/user', User.index);
-router.put('/api/user', User.update); //Senha
+router.post('/api/user/mudar-senhar', checkToken, Auth.mudarSenha);
 router.delete('/api/user/', checkToken, async(req, res) =>{
     const retorno = await User.delete( req, res );
     return retorno;
