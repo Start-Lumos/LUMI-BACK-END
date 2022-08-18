@@ -96,6 +96,33 @@ Se você deseja visualizar a organização do projeto em nosso Trello, você pod
 
 ## ![link](https://user-images.githubusercontent.com/102249811/184334676-ed902c74-e1fc-44a8-828b-4c3eb1490767.png) Design
 
+### Web
+
+<div style="display: inline;">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185459892-b5b16f75-5d7e-400a-8e25-6db3a1054803.png' style="width: 30%">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185460858-78b2e668-3383-435b-b02b-973f502b7785.png' style="width: 30%">
+</div>
+<div style="display: inline;">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185460107-31c227b2-631f-476b-9c01-9b2a190928e4.png' style="width: 30%">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185460897-4932a58e-9209-45cc-a9aa-1b99b9e4bff0.png' style="width: 30%">
+</div>
+<div style="display: inline;">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185461102-9361179e-a017-4df0-b3c6-c69a413eecff.png' style="width: 30%">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185460957-67d1bb45-34e0-4fcf-8263-9d07be0d35fc.png' style="width: 30%">
+</div>
+
+### Mobile
+
+<div style="display: inline;">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185462332-fd77996e-6b01-4ff4-8a24-c255317eeadc.png' style="width: 30%">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185462371-589b21ab-0ccc-4400-8f33-c2669661c1c9.png' style="width: 30%">
+</div>
+
+<div style="display: inline;">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185462399-89710c78-4f50-4583-9da6-a9932122d976.png' style="width: 30%">
+	<img alt="" src='https://user-images.githubusercontent.com/102249811/185462444-c0ebfe89-9462-4db7-8ff1-dfbdd71faa80.png' style="width: 30%">	
+</div>
+
 ## ![link](https://user-images.githubusercontent.com/102249811/184334676-ed902c74-e1fc-44a8-828b-4c3eb1490767.png) Autores
 
 <table>
